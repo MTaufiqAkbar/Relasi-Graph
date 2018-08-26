@@ -1,0 +1,408 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd" >
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+
+
+    <f:metadata>
+        <f:viewAction action="#{Collab.collabGoF}"/>
+        <!--#{Collab.collabGoF}-->
+    </f:metadata>
+
+    <h:head>
+        <title>Graph of Relation</title>
+        <h:outputStylesheet library = "css" name = "style.css" /> 
+    </h:head>
+
+
+    <body>
+        <section class="container">
+            <div class="zoom">
+                <div class="background">
+                   <div class="left-half">
+
+                        <h1>
+                            ===== GRAPH OF RELATION RIN LIPI =====
+                        </h1>
+                        <!---Untuk mengatur ukuran layar web!-->
+                        <p class="solid">
+                            <svg width="825" height="420"></svg> 
+                        </p>
+<!--                        <div class="buttons">
+                            <button data-zoom="+1">Zoom In</button>
+                            <button data-zoom="-1">Zoom Out</button>
+                        </div>-->
+                        <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+
+
+                        <script>
+//var svg = d3.select("svg"),
+//    width = +svg.attr("width"),
+//    height = +svg.attr("height");
+//
+//var color = d3.scaleOrdinal(d3.schemeCategory20);
+//
+//var simulation = d3.forceSimulation()
+//    .force("link", d3.forceLink().distance(-100).strength(0.2))
+//    .force("charge", d3.forceManyBody().strength(-550).distanceMax(120).distanceMin(50))
+//    .force("center", d3.forceCenter(width / 2, height / 2));
+//
+//d3.json("graph.json", function(error, graph) {
+//  if (error) throw error;
+//
+//  var nodes = graph.nodes,
+//      nodeById = d3.map(nodes, function(d) { return d.id; }),
+//      links = graph.links,
+//      bilinks = [];
+//
+//  links.forEach(function(link) {
+//    var s = link.source = nodeById.get(link.source),
+//        t = link.target = nodeById.get(link.target),
+//        i = {}; // intermediate node
+//    nodes.push(i);
+//    links.push({source: s, target: i}, {source: i, target: t});
+//    bilinks.push([s, i, t]);
+//  });
+//
+//  var link = svg.selectAll(".link")
+//    .data(bilinks)
+//    .enter().append("path")
+//      .attr("class", "link");
+//      
+//
+//  var node = svg.selectAll(".node")
+//    .data(nodes.filter(function(d) { return d.id; }))
+//    .enter().append("circle")
+//      .attr("class", "node")
+//      .attr("r", function (d) { return d.radius;})
+//      .attr("fill", function(d) { return color(d.group); })
+//      .call(d3.drag()
+//          .on("start", dragstarted)
+//          .on("drag", dragged)
+//          .on("end", dragended));
+//
+//  node.append("title")
+//      .text(function(d) { return d.id; });
+//
+//  simulation
+//      .nodes(nodes)
+//      .on("tick", ticked);
+//
+//  simulation.force("link")
+//      .links(links);
+//
+//  function ticked() {
+//    link.attr("d", positionLink);
+//    node.attr("transform", positionNode);
+//  }
+//});
+//
+//function positionLink(d) {
+//  return "M" + d[0].x + "," + d[0].y
+//       + "S" + d[1].x + "," + d[1].y
+//       + " " + d[2].x + "," + d[2].y;
+//}
+//
+//function positionNode(d) {
+//  return "translate(" + d.x + "," + d.y + ")";
+//}
+//
+//function dragstarted(d) {
+//  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+//  d.fx = d.x, d.fy = d.y;
+//}
+//
+//function dragged(d) {
+//  d.fx = d3.event.x, d.fy = d3.event.y;
+//}
+//
+//function dragended(d) {
+//  if (!d3.event.active) simulation.alphaTarget(0);
+//  d.fx = null, d.fy = null;
+//}
+
+
+
+
+                            var svg = d3.select("svg"),
+                                    width = +svg.attr("width"),
+                                    height = +svg.attr("height");
+//                                    transform = d3.zoomIdentity;;
+
+//                            var zoom = d3.behavior.zoom()
+//var g = svg.append("g");
+//                        svg.call(d3.zoom()
+//                                .scaleExtent([1 / 2, 8])
+//                                .on("zoom", zoomed));
+//                            function zoomed() {
+//                                g.attr("transform", d3.event.transform);
+//                              }
+               
+                            var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+                            var simulation = d3.forceSimulation()
+                                    .force("link", d3.forceLink().id(function (d) {
+                                        return d.id;
+                                    }).distance(80).strength(0))
+                                    .force("charge", d3.forceManyBody().strength(-200).distanceMax(80).distanceMin(20))
+                                    .force("center", d3.forceCenter(width / 2, height / 2)); 
+                            
+//                            var g = svg.append("g");
+//                            g.selectAll("circle")
+//                                .data(points)
+//                              .enter().append("circle")
+//                                .attr("cx", function(d) { return d.x; })
+//                                .attr("cy", function(d) { return d.y; })
+//                                .attr("r", 2.5)
+//                                .call(d3.drag()
+//                                    .on("drag", dragged));
+
+
+                            d3.json("graph.json", function (error, graph) {
+                                if (error)
+                                    throw error;
+                                
+                                
+                                
+//                                //add encompassing group for the zoom 
+//                                var g = svg.append("g")
+//                                    .attr("class", "everything");
+//                            
+//                                //add zoom capabilities 
+//                                var zoom_handler = d3.zoom()
+//                                    .on("zoom", zoom_actions);
+//
+//                                zoom_handler(svg);     
+//
+//                                function zoom_actions(){
+//                                    g.attr("transform", d3.event.transform)
+//                                }
+//var g = svg.append("g");
+//
+////g.selectAll("circle")
+////    .data(points)
+////  .enter().append("circle")
+////    .attr("cx", function(d) { return d.x; })
+////    .attr("cy", function(d) { return d.y; })
+////    .attr("r", 2.5)
+////    .call(d3.drag()
+////        .on("drag", dragged));
+//
+//svg.call(d3.zoom()
+//    .scaleExtent([1 / 2, 8])
+//    .on("zoom", zoomed));
+
+
+                                //    Untuk mengatur edge
+                                var link = svg.append("g")
+                                        .attr("class", "links")
+                                        .selectAll("line")
+                                        .data(graph.links)
+                                        .enter().append("line")
+                                        .attr("stroke-width", function (d) {
+                                            return Math.sqrt(d.value);
+                                        });
+
+                                //    Untuk mengatur tulisan didalam node
+                                var node = svg.append("g")
+                                        .attr("class", "nodes")
+                                        .selectAll("circle")
+                                        .data(graph.nodes)
+                                        .enter().append("circle")
+                                        .attr("r", function (d) {
+                                            return d.radius;
+                                        })
+                                        .attr("fill", function (d) {
+                                            return color(d.group);
+                                        })
+                                        .call(d3.drag()
+                                                .on("start", dragstarted)
+                                                .on("drag", dragged)
+                                                .on("end", dragended));
+                                        
+                                       
+    
+    
+                                //   Untuk menampilkan Subject
+                                node.append("title")
+                                        .text(function (d) {
+                                            return "Subject: \n" + d.subject + "\n\n" + "Affiliation: \n " + d.group;
+                                        });
+
+                                link.append("title")
+                                        .text(function (d) {
+                                            return d.value;
+                                        });
+
+                                //   Untuk mengatur tulisan diluar node
+                                var myText = svg.selectAll(".mytext")
+                                        .data(graph.nodes)
+                                        .enter()
+                                        .append("text");
+                                //the rest of your code
+
+                                myText.style("fill", "#336600")
+                                        .attr("font-size", "13")
+                                        .attr("width", "10")
+                                        .attr("height", "10")
+                                        .text(function (d) {
+                                            return d.name;
+                                        });
+
+                                simulation
+                                        .nodes(graph.nodes)
+                                        .on("tick", ticked);
+
+                                simulation.force("link")
+                                        .links(graph.links);
+                                                        //Zoom functions 
+                                                        
+                                                        //add encompassing group for the zoom 
+//var g = svg.append("g")
+//    .attr("class", "everything");
+//
+
+                                function ticked() {
+                                    link
+                                            .attr("x1", function (d) {
+                                                return d.source.x;
+                                            })
+                                            .attr("y1", function (d) {
+                                                return d.source.y;
+                                            })
+                                            .attr("x2", function (d) {
+                                                return d.target.x;
+                                            })
+                                            .attr("y2", function (d) {
+                                                return d.target.y;
+                                            });
+
+                                    node
+                                            .attr("cx", function (d) {
+                                                return d.x;
+                                            })
+                                            .attr("cy", function (d) {
+                                                return d.y;
+                                            });
+
+                                    myText
+                                            .attr("x", function (d) {
+                                                return d.x;
+                                            })
+                                            .attr("y", function (d) {
+                                                return d.y;
+                                            });
+                                }
+                            });
+                           
+
+                            function dragstarted(d) {
+                                if (!d3.event.active)
+                                    simulation.alphaTarget(0.5).restart();
+                                d.fx = d.x;
+                                d.fy = d.y;
+                            }
+
+                            function dragged(d) {
+                                d.fx = d3.event.x;
+                                d.fy = d3.event.y;
+                            }
+
+                            function dragended(d) {
+                                if (!d3.event.active)
+                                    simulation.alphaTarget(0);
+                                d.fx = null;
+                                d.fy = null;
+                            }
+                            
+//                                // TODO: Pan function, can be better implemented.
+//
+//    function pan(domNode, direction) {
+//        var speed = panSpeed;
+//        if (panTimer) {
+//            clearTimeout(panTimer);
+//            translateCoords = d3.transform(svgGroup.attr("transform"));
+//            if (direction == 'left' || direction == 'right') {
+//                translateX = direction == 'left' ? translateCoords.translate[0] + speed : translateCoords.translate[0] - speed;
+//                translateY = translateCoords.translate[1];
+//            } else if (direction == 'up' || direction == 'down') {
+//                translateX = translateCoords.translate[0];
+//                translateY = direction == 'up' ? translateCoords.translate[1] + speed : translateCoords.translate[1] - speed;
+//            }
+//            scaleX = translateCoords.scale[0];
+//            scaleY = translateCoords.scale[1];
+//            scale = zoomListener.scale();
+//            svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
+//            d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
+//            zoomListener.scale(zoomListener.scale());
+//            zoomListener.translate([translateX, translateY]);
+//            panTimer = setTimeout(function() {
+//                pan(domNode, speed, direction);
+//            }, 50);
+//        }
+//    }
+//
+//    // Define the zoom function for the zoomable tree
+//
+//    function zoom() {
+//        svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+//    }
+    
+              
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="background1">  
+                <div class="right-half">  
+                    <div class="zoom1">
+                        <h3 class="header">
+                            ====== RIN LIPI ======
+                        </h3>
+                        <h4 class="isi">
+                            Graph of Relation menggambarkan hubungan antara beberapa author dalam
+                            membuat suatu jurnal ilmiah, artikel maupun paper dilengkapi dengan
+                            subject jurnal tersebut.
+                        </h4>
+                        <h3 class="sign">
+                            ======================
+                        </h3>
+                        <div class="isi1">
+                            <h4>
+                                <i>AUTHOR :</i>
+                            </h4>
+                            <h4 class="isi">
+                                Dilambangkan dalam bentuk node.
+                            </h4>
+                            <h4>
+                                <i>AFFILIATION :</i>
+                            </h4>
+                            <h4 class="isi">
+                                Dilambangkan dengan warna.
+                            </h4>
+                            <h4>
+                                <i>SUBJECT + AFFILIATION :</i>
+                            </h4>
+                            <h4 class="isi">
+                                Ditampilkan apabila mengarahkan cursor ke arah node.
+                            </h4>
+                            <h3 class="sign">
+                                ======================
+                            </h3>
+                            <h4 class="footer">
+                                Pusat Dokumentasi dan Informasi Ilmiah (PDII) - LIPI
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
